@@ -8,22 +8,43 @@
 export async function readContent(): Promise<Record<string, unknown>> {
   if (import.meta.env.SSR) {
     // 1) Try filesystem — works in dev (Nitro dev server) and traditional Node hosting
-    try {
-      const fs = await import('node:fs')
-      const path = await import('node:path')
-      const filePath = path.resolve(process.cwd(), 'public/content.json')
-      const text = fs.readFileSync(filePath, 'utf-8')
-      return JSON.parse(text)
-    } catch {
-      // 2) Filesystem failed — try HTTP (Vercel serverless, where static assets
-      //    are CDN-served and not on the lambda filesystem)
-      const baseUrl = process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}`
-        : `http://localhost:${process.env.PORT || 3000}`
-      const res = await fetch(`${baseUrl}/content.json`)
-      if (!res.ok) throw new Error(`Failed to fetch content: ${res.status}`)
-      return res.json()
+    const paths = ['public/content.json']
+    for (const relative of paths) {
+      try {
+        const fs = await import('node:fs')
+        const path = await import('node:path')
+        const filePath = path.resolve(process.cwd(), relative)
+        if (fs.existsSync(filePath)) {
+          return JSON.parse(fs.readFileSync(filePath, 'utf-8'))
+        }
+      } catch {
+      }
     }
+
+    // 2) Filesystem failed — try HTTP (Vercel serverless, where static assets
+    //    are CDN-served and not on the lambda filesystem).
+    //    Only attempt this when VERCEL_URL is set — never fall back to localhost.
+    if (process.env.VERCEL_URL) {
+      const res = await fetch(`https://${process.env.VERCEL_URL}/content.json`)
+      if (res.ok) {
+        // Verify the response is actually JSON before parsing
+        const contentType = res.headers.get('content-type') || ''
+        if (contentType.includes('json') || contentType.includes('text/plain')) {
+          return res.json()
+        }
+        // Response is HTML or something else — read first bytes for diagnostics
+        const text = await res.text()
+        throw new Error(
+          `Expected JSON from /content.json but got ${contentType}. ` +
+          `Response starts with: ${text.slice(0, 200)}`
+        )
+      }
+      throw new Error(`Failed to fetch content.json from Vercel: HTTP ${res.status}`)
+    }
+
+    throw new Error(
+      'Failed to load content.json on server (filesystem not found and VERCEL_URL not set).'
+    )
   }
 
   // Client-side: relative URL resolves against the browser origin
