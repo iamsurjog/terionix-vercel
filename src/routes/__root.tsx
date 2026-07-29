@@ -137,9 +137,9 @@ function RouteErrorFallback({ error }: ErrorComponentProps) {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
         </div>
-        <h2 className="text-xl font-bold text-center text-text mb-2">Connection Error</h2>
+        <h2 className="text-xl font-bold text-center text-text mb-2">Page Error</h2>
         <p className="text-text/60 text-center mb-6 text-sm">
-          Failed to load this page. The backend server may be unavailable.
+          Something went wrong while loading this page.
         </p>
         <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-6">
           <p className="text-red-700 text-xs font-mono break-all">
@@ -152,9 +152,6 @@ function RouteErrorFallback({ error }: ErrorComponentProps) {
         >
           Try Again
         </button>
-        <p className="text-center text-xs text-text/40 mt-4">
-          If the problem persists, check that the backend server is running.
-        </p>
       </div>
     </div>
   )

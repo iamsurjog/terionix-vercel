@@ -83,12 +83,11 @@ function ContactUs() {
             </div>
           </div>
         </div>
-
+        
         {/* ====== WHATSAPP QUICK PICKUP HOOK ====== */}
-        <div className="px-4 pb-24 motion-preset-slide-up">
+        {/*<div className="px-4 pb-24 motion-preset-slide-up">
           <div className="max-w-4xl mx-auto">
             <div className="relative bg-gradient-to-br from-green-50 to-green-100/50 rounded-3xl border border-green-200/50 p-8 md:p-12 text-center overflow-hidden">
-              {/* Decorative elements */}
               <div className="absolute top-0 right-0 w-40 h-40 bg-green-500/5 rounded-full blur-3xl" />
               <div className="absolute bottom-0 left-0 w-60 h-60 bg-green-500/5 rounded-full blur-3xl" />
 
@@ -128,6 +127,7 @@ function ContactUs() {
             </div>
           </div>
         </div>
+        */}
 
         <Footer content={content} />
       </main>
@@ -135,9 +135,15 @@ function ContactUs() {
   )
 }
 
-const API_BASE = import.meta.env.SSR
-  ? (process.env.API_URL || 'http://localhost:8001/api')
-  : '/api'
+const FORMSPREE_GENERAL = import.meta.env.VITE_FORMSPREE_GENERAL_ID
+  ? `https://formspree.io/f/${import.meta.env.VITE_FORMSPREE_GENERAL_ID}`
+  : null
+const FORMSPREE_CAREER = import.meta.env.VITE_FORMSPREE_CAREER_ID
+  ? `https://formspree.io/f/${import.meta.env.VITE_FORMSPREE_CAREER_ID}`
+  : null
+const FORMSPREE_QUOTE = import.meta.env.VITE_FORMSPREE_QUOTE_ID
+  ? `https://formspree.io/f/${import.meta.env.VITE_FORMSPREE_QUOTE_ID}`
+  : null
 
 function GeneralForm({ segment }: { segment: { heading: string; description: string } }) {
   const content = Route.useLoaderData()!
@@ -150,7 +156,11 @@ function GeneralForm({ segment }: { segment: { heading: string; description: str
     const form = e.currentTarget
     const data = Object.fromEntries(new FormData(form).entries())
     try {
-      const res = await fetch(`${API_BASE}/contact/general`, {
+      if (!FORMSPREE_GENERAL) {
+        setStatus('error')
+        return
+      }
+      const res = await fetch(FORMSPREE_GENERAL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -233,7 +243,11 @@ function CareerForm({ segment, preselectedPosition }: { segment: { heading: stri
     const form = e.currentTarget
     const data = Object.fromEntries(new FormData(form).entries())
     try {
-      const res = await fetch(`${API_BASE}/contact/career`, {
+      if (!FORMSPREE_CAREER) {
+        setStatus('error')
+        return
+      }
+      const res = await fetch(FORMSPREE_CAREER, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -420,7 +434,11 @@ function QuoteForm({ segment, materialsQuery }: { segment: { heading: string; de
     const form = e.currentTarget
     const data = Object.fromEntries(new FormData(form).entries())
     try {
-      const res = await fetch(`${API_BASE}/contact/quote`, {
+      if (!FORMSPREE_QUOTE) {
+        setStatus('error')
+        return
+      }
+      const res = await fetch(FORMSPREE_QUOTE, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),

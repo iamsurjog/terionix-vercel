@@ -40,9 +40,5 @@ export async function changePassword(currentPassword: string, newPassword: strin
 
 export async function logout(): Promise<void> {
   localStorage.removeItem(AUTH_KEY)
-  try {
-    await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' })
-  } catch {
-    // server session will timeout naturally
-  }
+  // No backend to call in standalone mode
 }
