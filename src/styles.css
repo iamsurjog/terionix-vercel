@@ -1,0 +1,474 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap');
+@import "tailwindcss";
+@plugin "tailwindcss-motion";
+@plugin "@tailwindcss/typography";
+
+@theme {
+    /* --- MORNING EMERALD THEME (Light) --- */
+    
+    /* Base */
+    --color-text: #0f172a;
+    --color-background: #f8fafc;
+    
+    /* Primary (Emerald Green) */
+    --color-primary: #059669;
+    --color-primary-deep: #047857;
+    --color-primary-rgb: 5, 150, 105;
+    
+    /* Secondary (Teal — for text accents, badges, gradients) */
+    --color-secondary: #0d9488;
+    --color-secondary-deep: #0f766e;
+    --color-secondary-rgb: 13, 148, 136;
+    
+    /* Surface (for cards, elevated panels) */
+    --color-surface: #ffffff;
+    --color-surface-deep: #f1f5f9;
+    --color-surface-rgb: 255, 255, 255;
+    
+    /* Accent (Amber) */
+    --color-accent: #d97706;
+    --color-accent-deep: #b45309;
+    --color-accent-rgb: 217, 119, 6;
+    
+    /* Base Effects */
+    --color-glow: rgba(5, 150, 105, 0.12);
+    --color-glass: rgba(0, 0, 0, 0.04);
+    
+    /* System & Status */
+    --color-success: #16a34a;
+    --color-error: #dc2626;
+    --color-warning: #d97706;
+    --color-success-soft: rgba(22, 163, 74, 0.12);
+    --color-error-soft: rgba(220, 38, 38, 0.12);
+    --color-success-deep: #15803d;
+    --color-error-deep: #b91c1c;
+    
+    /* JSON Formatting */
+    --color-json-bg: #f1f5f9;
+    --color-json-surface: #ffffff;
+    --color-json-key: #059669;
+    --color-json-string: #d97706;
+    --color-json-bool: #7c3aed;
+    --color-json-number: #0284c7;
+    
+    /* Extended Effects & Shadows */
+    --color-glow-strong: rgba(5, 150, 105, 0.2);
+    --color-glow-secondary: rgba(13, 148, 136, 0.18);
+    --color-accent-glass: rgba(217, 119, 6, 0.08);
+    --color-shadow-primary: rgba(5, 150, 105, 0.12);
+    --color-shadow-dark: rgba(0, 0, 0, 0.08);
+    
+    /* Drop Shadows */
+    --drop-shadow-glow: 0 0 12px rgba(5, 150, 105, 0.12);
+    --drop-shadow-glow-strong: 0 0 20px rgba(5, 150, 105, 0.2);
+    
+    --color-white: #ffffff;
+    
+    /* Surface Elevations (for .living-gradient and decorative elements) */
+    --color-bg-light: #f1f5f9;
+    --color-bg-mint: #ecfdf5;
+    --color-bg-warm: #fffbeb;
+    --color-bg-neutral: #f8fafc;
+
+    --font-sans: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+    --font-title: "Exo 2", ui-sans-serif, system-ui, sans-serif;
+    --font-poem: "Cormorant Garamond", Georgia, serif;
+}
+
+@utility text-gradient {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary), var(--color-accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+@utility text-gradient-green {
+    background: linear-gradient(135deg, var(--color-primary-deep), var(--color-primary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+@keyframes gradient-shift {
+    0%, 100% { background-position: 0% 50%; }
+    25% { background-position: 100% 0%; }
+    50% { background-position: 100% 100%; }
+    75% { background-position: 0% 100%; }
+}
+
+@keyframes float-around {
+    0%, 100% { transform: translate(0, 0) scale(1); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    25% { transform: translate(100px, -80px) scale(1.2); }
+    50% { transform: translate(-50px, -150px) scale(0.8); }
+    75% { transform: translate(80px, -60px) scale(1.1); }
+}
+
+@keyframes firefly-1 { 0%, 100% { transform: translate(0, 0) scale(1); opacity: 0; } 10% { opacity: 1; } 50% { transform: translate(120px, -180px) scale(1.3); opacity: 1; } 90% { opacity: 0.8; } }
+@keyframes firefly-2 { 0%, 100% { transform: translate(0, 0) scale(1); opacity: 0; } 15% { opacity: 0.9; } 50% { transform: translate(-140px, -120px) scale(0.7); opacity: 1; } 85% { opacity: 0.6; } }
+@keyframes firefly-3 { 0%, 100% { transform: translate(0, 0) scale(1); opacity: 0; } 20% { opacity: 1; } 50% { transform: translate(80px, -200px) scale(1.1); opacity: 0.9; } 80% { opacity: 0.5; } }
+@keyframes firefly-4 { 0%, 100% { transform: translate(0, 0) scale(1); opacity: 0; } 12% { opacity: 0.8; } 50% { transform: translate(-100px, -90px) scale(1.4); opacity: 1; } 88% { opacity: 0.7; } }
+@keyframes firefly-5 { 0%, 100% { transform: translate(0, 0) scale(1); opacity: 0; } 8% { opacity: 1; } 50% { transform: translate(60px, -160px) scale(0.9); opacity: 1; } 92% { opacity: 0.4; } }
+
+@keyframes cursor-glow-pulse {
+    0%, 100% { box-shadow: 0 0 8px 2px var(--color-glow-strong); }
+    50% { box-shadow: 0 0 20px 6px var(--color-glow-secondary); }
+}
+
+@keyframes breathe {
+    0%, 100% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.05); opacity: 1; }
+}
+
+@keyframes scanline {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100vh); }
+}
+
+@keyframes glitch-1 {
+    0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+    10% { clip-path: inset(20% 0 60% 0); transform: translate(-3px, 2px); }
+    20% { clip-path: inset(60% 0 10% 0); transform: translate(3px, -1px); }
+    30% { clip-path: inset(10% 0 50% 0); transform: translate(-2px, 3px); }
+    40% { clip-path: inset(50% 0 30% 0); transform: translate(2px, -2px); }
+}
+
+@keyframes typing-cursor {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+@keyframes poem-fade-in {
+    0% { opacity: 0; transform: translateY(20px) scale(0.98); filter: blur(4px); }
+    100% { opacity: var(--poem-opacity, 0.12); transform: translateY(0) scale(1); filter: blur(0); }
+}
+
+@keyframes letter-reveal {
+    0% { opacity: 0; transform: translateY(30px) rotateX(40deg); filter: blur(8px); }
+    100% { opacity: 1; transform: translateY(0) rotateX(0); filter: blur(0); }
+}
+
+@keyframes circuit-trace {
+    0% { stroke-dashoffset: 1000; }
+    100% { stroke-dashoffset: 0; }
+}
+
+@keyframes aurora-wave {
+    0%, 100% { transform: translateX(0) translateY(0) scaleY(1); }
+    25% { transform: translateX(-30px) translateY(-10px) scaleY(1.2); }
+    50% { transform: translateX(30px) translateY(5px) scaleY(0.8); }
+    75% { transform: translateX(-20px) translateY(-5px) scaleY(1.1); }
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+}
+
+@keyframes magnetic-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+}
+
+@keyframes data-stream {
+    0% { transform: translateY(-100%); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(100vh); opacity: 0; }
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+html,
+body {
+    min-height: 100%;
+    background-color: var(--color-background);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    cursor: none;
+}
+
+a, button, input, textarea, select, [role="button"] {
+    cursor: none;
+}
+
+@media (pointer: coarse) {
+    html, body, a, button, input, textarea, select, [role="button"] {
+        cursor: auto;
+    }
+    .cursor-dot,
+    .cursor-ring {
+        display: none !important;
+    }
+}
+
+::selection {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--color-primary); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-primary-deep); }
+
+.living-gradient {
+    background: linear-gradient(
+        135deg,
+        var(--color-background) 0%,
+        var(--color-bg-light) 20%,
+        var(--color-bg-mint) 40%,
+        var(--color-bg-warm) 60%,
+        var(--color-bg-neutral) 80%,
+        var(--color-background) 100%
+    );
+    background-size: 400% 400%;
+    animation: gradient-shift 20s ease infinite;
+}
+
+.cursor-dot {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    background: var(--color-primary);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: difference;
+    transition: transform 0.1s ease;
+}
+
+.cursor-ring {
+    position: fixed;
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--color-primary);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    mix-blend-mode: difference;
+    transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
+}
+
+.cursor-ring.hovering {
+    width: 60px;
+    height: 60px;
+    border-color: var(--color-accent);
+    background: var(--color-accent-glass);
+}
+
+.poem-verse {
+    font-family: var(--font-poem);
+    opacity: var(--poem-opacity, 0.1);
+    animation: poem-fade-in 2s ease forwards;
+    font-style: italic;
+    letter-spacing: 0.02em;
+    line-height: 1.7;
+    transition: opacity 0.8s ease;
+}
+
+.poem-verse:hover {
+    --poem-opacity: 0.3;
+}
+
+.glitch-text {
+    position: relative;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.glitch-text::before {
+    color: var(--color-secondary);
+    z-index: -1;
+    animation: glitch-1 3s infinite linear alternate-reverse;
+}
+
+.glitch-text::after {
+    color: var(--color-accent);
+    z-index: -2;
+    animation: glitch-1 2s infinite linear alternate-reverse;
+    animation-delay: 0.3s;
+}
+
+.letter-reveal {
+    display: inline-block;
+    animation: letter-reveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    opacity: 0;
+}
+
+.magnetic-btn {
+    transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.data-stream-line {
+    position: absolute;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent, var(--color-primary), transparent);
+    opacity: 0.08;
+    animation: data-stream 8s linear infinite;
+}
+
+.aurora-bg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.aurora-wave {
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    border-radius: 50%;
+    filter: blur(40px);
+    opacity: 0.08;
+    animation: aurora-wave 12s ease-in-out infinite;
+    will-change: transform;
+}
+
+.card-hover {
+    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.card-hover:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 0 20px 60px var(--color-shadow-primary), 0 8px 20px var(--color-shadow-dark);
+}
+
+.section-divider {
+    height: 2px;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        var(--color-primary) 20%,
+        var(--color-secondary) 50%,
+        var(--color-accent) 80%,
+        transparent 100%
+    );
+    opacity: 0.3;
+}
+
+/* ========================================================================
+   SAFARI PERFORMANCE FIXES
+   Safari has poor GPU handling of backdrop-filter, mix-blend-mode, and
+   complex CSS animations. These overrides reduce jank without breaking
+   the visual layout.
+   ======================================================================== */
+
+/* Safari-targeted performance improvements */
+.safari .backdrop-blur-sm,
+.safari .backdrop-blur,
+.safari \::-webkit-backdrop {
+    -webkit-backdrop-filter: blur(2px) !important;
+    backdrop-filter: blur(2px) !important;
+}
+
+.safari .backdrop-blur-xl,
+.safari .backdrop-blur-2xl {
+    -webkit-backdrop-filter: blur(8px) !important;
+    backdrop-filter: blur(8px) !important;
+}
+
+/* Disable expensive entrance animations on Safari — elements stay visible */
+.safari .motion-preset-slide-up,
+.safari .motion-preset-pop,
+.safari .motion-preset-fade,
+.safari .motion-preset-bounce {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+/* Slower aurora = less repaint cost */
+.safari .aurora-wave {
+    animation-duration: 30s !important;
+    opacity: 0.04 !important;
+}
+
+/* Disable floating blob animations on Safari */
+.safari [class*="motion-preset-float"],
+.safari [class*="motion-preset-pulse"] {
+    animation: none !important;
+}
+
+/* Reduce glow blur elements on Safari */
+.safari [class*="blur-3xl"] {
+    opacity: 0.3 !important;
+}
+
+/* Reset cursor to native on Safari — custom cursor with mix-blend-mode is
+   the #1 cause of Safari jank. The .safari class is added by __root.tsx. */
+.safari,
+.safari a,
+.safari button,
+.safari input,
+.safari textarea,
+.safari select,
+.safari [role="button"] {
+    cursor: auto !important;
+}
+
+/* Reduce particle field from 10 to 3 on Safari */
+.safari .safari-hide-particle {
+    display: none !important;
+}
+
+/* ========================================================================
+   PREFERS-REDUCED-MOTION
+   Standard accessibility feature — disable all non-essential motion for
+   users who have requested reduced motion in their OS settings.
+   ======================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    html {
+        scroll-behavior: auto;
+    }
+
+    .living-gradient {
+        animation: none !important;
+        background-size: 100% !important;
+    }
+
+    .cursor-dot,
+    .cursor-ring {
+        display: none !important;
+    }
+
+    .aurora-wave {
+        animation: none !important;
+        opacity: 0.03 !important;
+    }
+
+    .card-hover:hover {
+        transform: none !important;
+    }
+
+    [class*="motion-preset-"] {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+}
